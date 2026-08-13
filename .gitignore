@@ -1,0 +1,9 @@
+# Neovim temporary files
+*.log
+*.swp
+*.swo
+*~
+
+# Cache
+.cache/
+
