@@ -17,7 +17,11 @@ autocmd("BufWritePre", {
   group = augroup("GoFormatOnSave", { clear = true }),
   pattern = "*.go",
   callback = function()
-    local params = vim.lsp.util.make_range_params()
+	local clients = vim.lsp.get_clients({ bufnr = 0, name = "gopls" })
+	local client = clients[1] or vim.lsp.get_clients({ bufnr = 0 })[1]
+    local encoding = client and client.offset_encoding or "utf-16"
+	
+    local params = vim.lsp.util.make_range_params(nil, encoding)
     params.context = {
       only = { "source.organizeImports" },
     }
@@ -32,7 +36,7 @@ autocmd("BufWritePre", {
     for _, res in pairs(result or {}) do
       for _, action in ipairs(res.result or {}) do
         if action.edit then
-          vim.lsp.util.apply_workspace_edit(action.edit, "utf-8")
+          vim.lsp.util.apply_workspace_edit(action.edit, encoding)
         elseif action.command then
           vim.lsp.buf.execute_command(action.command)
         end
