@@ -64,28 +64,3 @@ autocmd("BufWritePre", {
   end,
 })
 
--- 針對 Go 檔案啟用原生 Tree-sitter 高亮、縮排與折疊
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "go", "gomod", "gowork" },
-  callback = function(args)
-    local buf = args.buf
-    local lang = "go"
-
-    -- 檢查 go.so 解析器是否存在
-    local has_parser = pcall(vim.treesitter.get_parser, buf, lang)
-    if not has_parser then
-      return
-    end
-
-    -- 啟動原生 Tree-sitter 高亮
-    vim.treesitter.start(buf, lang)
-
-    -- 啟用原生智慧縮排
-    vim.bo[buf].indentexpr = "v:lua.vim.treesitter.indentexpr()"
-
-    -- 啟用原生代碼折疊（預設不展開折疊，按 zR/zA 操作）
-    vim.wo.foldmethod = "expr"
-    vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-    vim.wo.foldenable = false
-  end,
-})
