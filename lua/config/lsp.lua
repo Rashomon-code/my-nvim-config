@@ -1,4 +1,4 @@
--- 1. LSP 啟用時綁定通用快捷鍵 (按鍵映射僅在 LSP 成功連線後生效)
+-- LSP 啟用時綁定通用快捷鍵 (按鍵映射僅在 LSP 成功連線後生效)
 vim.api.nvim_create_autocmd("LspAttach", {
   group = vim.api.nvim_create_augroup("UserLspConfig", { clear = true }),
   callback = function(ev)
@@ -21,22 +21,36 @@ vim.api.nvim_create_autocmd("LspAttach", {
   end,
 })
 
--- 2. 配置 gopls
-vim.lsp.config["gopls"] = {
-  cmd = { "gopls" },
-  filetypes = { "go", "gomod", "gowork", "gotmpl" },
-  root_markers = { "go.work", "go.mod", ".git" },
-  settings = {
-    gopls = {
-      completeUnimported = true, -- 自動補全未 import 的包並自動導入
-      usePlaceholders = true,    -- 補全函數時帶入參數佔位符
-      analyses = {
-        unusedparams = true,     -- 標示未使用的參數
+local servers = {
+  -- Go
+  gopls = {
+    cmd = { "gopls" },
+    filetypes = { "go", "gomod", "gowork", "gotmpl" },
+    root_markers = { "go.work", "go.mod", ".git" },
+    settings = {
+      gopls = {
+        completeUnimported = true,
+        usePlaceholders = true,
+        analyses = { unusedparams = true },
+        staticcheck = true,
       },
-      staticcheck = true,        -- 啟用更嚴格的靜態檢查
     },
   },
+
+  -- 💡 未來要加 C/C++ 就解開註解：
+  -- clangd = {
+  --   cmd = { "clangd" },
+  --   filetypes = { "c", "cpp", "objc", "objcpp" },
+  --   root_markers = { ".clang-format", "compile_commands.json", ".git" },
+  -- },
+
+  -- 💡 未來要加 Python 就繼續往下列：
+  -- pyright = { ... }
 }
 
--- 3. 啟用 gopls
-vim.lsp.enable("gopls")
+-- 啟用 LSP
+for name, config in pairs(servers) do
+  config.capabilities = capabilities
+  vim.lsp.config(name, config)
+  vim.lsp.enable(name)
+end

@@ -1,38 +1,20 @@
 return {
-  "nvim-treesitter/nvim-treesitter",
-  lazy = false,
-  build = ":TSUpdate",
-  config = function()
-    local ts = require("nvim-treesitter")
+  {
+    "romus204/tree-sitter-manager.nvim",
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+    config = function()
+      require("tree-sitter-manager").setup({
+        -- 指定需要的 Parser
+        ensure_installed = { "lua", "vim", "vimdoc", "python", "javascript", "typescript", "json", "markdown" },
+      })
 
-    ts.setup()
-
-    -- 靜態/自動宣告需要安裝的語言 Parser
-    ts.install({
-      "c",
-      "lua",
-      "vim",
-      "vimdoc",
-      "query",
-      "go",
-      "gomod",
-      "gowork",
-      "gotmpl",
-      "json",
-      "yaml",
-      "markdown",
-      "bash",
-    })
-
-    -- 透過 Neovim 原生 FileType 自動命令啟用語法高亮與縮進
-    vim.api.nvim_create_autocmd("FileType", {
-      group = vim.api.nvim_create_augroup("TreesitterSetup", { clear = true }),
-      callback = function()
-        -- 啟動 Neovim 原生 Treesitter 高亮
-        pcall(vim.treesitter.start)
-        -- 啟用 Treesitter 縮進引擎
-        vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-      end,
-    })
-  end,
-}
+      -- 啟用 Neovim 原生 Tree-sitter 語法高亮
+      vim.api.nvim_create_autocmd("FileType", {
+        group = vim.api.nvim_create_augroup("vim-treesitter-start", { clear = true }),
+        callback = function()
+          pcall(vim.treesitter.start)
+        end,
+      })
+    end,
+  },
+} 

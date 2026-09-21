@@ -1,6 +1,9 @@
 return {
   "echasnovski/mini.files",
   version = "*",
+  dependencies = {
+    'nvim-tree/nvim-web-devicons', -- 用于显示漂亮的图标
+  },
   keys = {
     {
       "<leader>e",

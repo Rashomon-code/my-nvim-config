@@ -1,9 +1,5 @@
 local map = vim.keymap.set
 
--- 設置 Leader 鍵為 Space
-vim.g.mapleader = " "
-vim.g.maplocalleader = " "
-
 -- 快速儲存與退出
 map("n", "<leader>w", "<cmd>w<CR>", { desc = "儲存檔案" })
 map("n", "<leader>q", "<cmd>q<CR>", { desc = "退出" })
