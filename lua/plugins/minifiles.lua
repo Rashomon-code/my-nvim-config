@@ -2,7 +2,7 @@ return {
   "echasnovski/mini.files",
   version = "*",
   dependencies = {
-    'nvim-tree/nvim-web-devicons', -- 用于显示漂亮的图标
+    'nvim-tree/nvim-web-devicons', -- 用於顯示圖標
   },
   keys = {
     {
