@@ -2,7 +2,7 @@ return {
   "nvim-telescope/telescope.nvim",
   dependencies = {
     "nvim-lua/plenary.nvim",
-    "nvim-tree/nvim-web-devicons", -- 提供漂亮的文件类型图标
+    "nvim-tree/nvim-web-devicons", -- 用於顯示圖標
     {
       "nvim-telescope/telescope-fzf-native.nvim",
       build = "make",
@@ -11,7 +11,7 @@ return {
       end,
     },
   },
-  cmd = "Telescope", -- 确保启动极速
+  cmd = "Telescope", -- 確保啟動極速
   keys = {
     -- 搜尋檔名 (Find Files)
     { "<leader>ff", "<cmd>Telescope find_files<CR>", desc = "搜尋專案檔案" },
@@ -29,14 +29,14 @@ return {
       path_display = { "truncate" },
       sorting_strategy = "ascending",
       layout_config = {
-        prompt_position = "top", -- 让输入框在顶部，更符合现代习惯
+        prompt_position = "top", -- 讓輸入框在頂部，更符合現代習慣
       },
     },
   },
   config = function(_, opts)
     local telescope = require("telescope")
     telescope.setup(opts)
-    -- 自动加载 fzf 加速扩展
+    -- 自動載入 fzf 加速擴充功能
     pcall(telescope.load_extension, "fzf")
   end,
 }
